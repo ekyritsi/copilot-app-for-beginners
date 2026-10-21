@@ -103,7 +103,8 @@ select {
 
 .filters {
   display: grid;
-  grid-template-columns: 2fr 1fr 1fr;
+  grid-template-columns: 2fr 1fr 1fr auto;
+  align-items: end;
   gap: 16px;
   margin-bottom: 28px;
   padding: 20px;
@@ -125,6 +126,33 @@ select {
   border-radius: 14px;
   color: #111827;
   background: white;
+}
+
+.clear-filters {
+  padding: 12px 18px;
+  border: 1px solid #1f2937;
+  border-radius: 14px;
+  color: #1f2937;
+  background: white;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.clear-filters:hover:not(:disabled) {
+  color: white;
+  background: #1f2937;
+}
+
+.clear-filters:focus-visible {
+  outline: 3px solid #2563eb;
+  outline-offset: 2px;
+}
+
+.clear-filters:disabled {
+  border-color: #d1d5db;
+  color: #6b7280;
+  background: #f3f4f6;
+  cursor: not-allowed;
 }
 
 .book-results {

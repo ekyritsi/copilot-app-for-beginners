@@ -21,13 +21,13 @@ const defaultFilters: BookFiltersState = {
 };
 
 export function filterBooks(bookList: Book[], filters: BookFiltersState) {
-  const normalizedSearchTerm = filters.searchTerm.trim().toLowerCase();
+  const normalizedSearchTerm = filters.searchTerm.trim();
 
   return bookList.filter((book) => {
     const matchesSearch =
       normalizedSearchTerm.length === 0 ||
-      book.title.toLowerCase().includes(normalizedSearchTerm) ||
-      book.author.toLowerCase().includes(normalizedSearchTerm);
+      book.title.includes(normalizedSearchTerm) ||
+      book.author.includes(normalizedSearchTerm);
     const matchesGenre = filters.selectedGenre === "all" || book.genre === filters.selectedGenre;
     const matchesStatus =
       filters.readingStatus === "all" ||
@@ -42,6 +42,10 @@ export default function App() {
   const [filters, setFilters] = useState<BookFiltersState>(defaultFilters);
   const genres = useMemo(() => [...new Set(books.map((book) => book.genre))].sort(), []);
   const filteredBooks = useMemo(() => filterBooks(books, filters), [filters]);
+  const hasActiveFilters =
+    filters.searchTerm.trim().length > 0 ||
+    filters.selectedGenre !== defaultFilters.selectedGenre ||
+    filters.readingStatus !== defaultFilters.readingStatus;
 
   return (
     <main className="app-shell">
@@ -66,6 +70,8 @@ export default function App() {
         onReadingStatusChange={(readingStatus) =>
           setFilters((current) => ({ ...current, readingStatus }))
         }
+        hasActiveFilters={hasActiveFilters}
+        onClearFilters={() => setFilters(defaultFilters)}
       />
 
       <section className="book-results" aria-live="polite">
