@@ -42,6 +42,10 @@ export default function App() {
   const [filters, setFilters] = useState<BookFiltersState>(defaultFilters);
   const genres = useMemo(() => [...new Set(books.map((book) => book.genre))].sort(), []);
   const filteredBooks = useMemo(() => filterBooks(books, filters), [filters]);
+  const hasActiveFilters =
+    filters.searchTerm.trim().length > 0 ||
+    filters.selectedGenre !== defaultFilters.selectedGenre ||
+    filters.readingStatus !== defaultFilters.readingStatus;
 
   return (
     <main className="app-shell">
@@ -66,6 +70,8 @@ export default function App() {
         onReadingStatusChange={(readingStatus) =>
           setFilters((current) => ({ ...current, readingStatus }))
         }
+        hasActiveFilters={hasActiveFilters}
+        onClearFilters={() => setFilters(defaultFilters)}
       />
 
       <section className="book-results" aria-live="polite">
